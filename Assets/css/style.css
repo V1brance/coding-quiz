@@ -1,0 +1,84 @@
+html {
+  box-sizing: border-box;
+}
+
+:root {
+  --secondary-text: white;
+  --text-color: darkgrey;
+  --primary-color: purple;
+  --custom-title-font: "Roboto", sans-serif;
+  --custom-para-font: "Open Sans", sans-serif;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  width: 100vw;
+  height: 60px;
+  border-bottom: 3px solid var(--primary-color);
+}
+
+#view-highscore,
+#timer {
+  font-family: var(--custom-title-font);
+}
+
+#view-highscore {
+  font-weight: bold;
+  font-size: 25px;
+  margin-left: 2vw;
+}
+
+#view-highscore:hover {
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+#timer {
+  font-weight: bold;
+  font-size: 25px;
+  margin-left: 85vw;
+}
+
+.quiz-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5vh;
+  margin-left: 20vw;
+  width: 60vw;
+}
+
+.quiz-area h1,
+.quiz-area p {
+  text-align: center;
+}
+
+.quiz-area h1 {
+  font-size: 35px;
+  margin-bottom: 0;
+  font-family: var(--custom-title-font);
+}
+
+.quiz-area p {
+  font-size: 20px;
+  width: 60%;
+  font-family: var(--custom-para-font);
+}
+
+.quiz-area button {
+  width: 10%;
+  height: 40px;
+  background-color: var(--primary-color);
+  color: var(--secondary-text);
+  border-radius: 5px;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  font-family: var(--custom-para-font);
+}
+
+.quiz-area button:hover {
+  box-shadow: 7px 7px 9px black;
+}
