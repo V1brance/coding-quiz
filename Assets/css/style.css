@@ -37,7 +37,7 @@ header {
 #timer {
   font-weight: bold;
   font-size: 25px;
-  margin-left: 85vw;
+  margin-left: 80vw;
 }
 
 .quiz-area {
@@ -58,6 +58,7 @@ header {
   font-size: 35px;
   margin-bottom: 0;
   font-family: var(--custom-title-font);
+  width: 100%;
 }
 
 .quiz-area p {
