@@ -67,7 +67,14 @@ header {
   font-family: var(--custom-para-font);
 }
 
-.quiz-area button {
+.button-area {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button-area button {
   width: 10%;
   height: 40px;
   background-color: var(--primary-color);
