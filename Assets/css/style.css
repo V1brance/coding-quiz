@@ -19,17 +19,20 @@ header {
 }
 
 #view-highscore,
-#timer {
+#timer,
+#disabled {
   font-family: var(--custom-title-font);
 }
 
-#view-highscore {
+#view-highscore,
+#disabled {
   font-weight: bold;
   font-size: 25px;
   margin-left: 2vw;
 }
 
-#view-highscore:hover {
+#view-highscore:hover,
+#disabled:hover {
   color: var(--primary-color);
   cursor: pointer;
 }
@@ -89,4 +92,10 @@ header {
 
 .quiz-area button:hover {
   box-shadow: 7px 7px 9px black;
+}
+
+#highscore-list {
+  text-align: left;
+  font-family: var(--custom-para-font);
+  font-size: 20px;
 }
