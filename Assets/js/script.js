@@ -4,6 +4,8 @@ var textArea = document.querySelector("#text-fill");
 var startButton = document.querySelector("#start-button");
 var buttonArea = document.querySelector(".button-area");
 var quizArea = document.querySelector(".quiz-area");
+
+var questionButtons;
 //key value pair list for the highscores
 //Remidner, highscoreList[newName] = score will add new item to object
 var highscoreList = {
@@ -12,12 +14,15 @@ var highscoreList = {
   NC: 17,
 };
 
+var questionNum = 1;
+
 var q1 = [
   "What does parentElement.appendChild(childElement) do?",
   "removes child element from its parent",
   "adds child element to the parent",
   "removes the text content from the child element",
   "nothing - this is not a function",
+  "B",
 ];
 var q2 = [
   "What does HTML stand for?",
@@ -25,6 +30,7 @@ var q2 = [
   "Hyper-Text Markup Language",
   "Hindering Telegraphed Marked List",
   "Heated Timed Modification Language",
+  "B",
 ];
 var q3 = [
   "What is the difference between margin and padding by default?",
@@ -32,6 +38,7 @@ var q3 = [
   "Margin is inside the element while padding is outside",
   "Margin and padding are both outside the element",
   "Margin and padding are both inside the element",
+  "A",
 ];
 
 var questionArray = [q1, q2, q3];
@@ -120,7 +127,8 @@ function clearHighscores() {
   addScores();
 }
 
-function showQuestion(text, answers, questionNum) {
+function showQuestion(text, answers, questionNum, answer) {
+  highscoreButton.setAttribute("id", "disabled");
   buttonArea.setAttribute("style", "Flex-direction: column");
 
   mainHeader.textContent = "Question " + questionNum;
@@ -135,14 +143,20 @@ function showQuestion(text, answers, questionNum) {
   }
 
   var allButtons = buttonArea.querySelectorAll(".question-option");
-  console.log(allButtons);
+  questionButtons = allButtons;
   for (i = 0; i < allButtons.length; i++) {
     allButtons[i].setAttribute("style", "width: 70%");
+    allButtons[i].addEventListener("click", function (event) {
+      checkAnswer(event, answer);
+    });
   }
 }
 
-function pickQuestion(qOps) {
-  var questionStruct = qOps[Math.floor(Math.random() * qOps.length)];
+function pickQuestion(allQuestions) {
+  //Selects a random question from the array index
+  var randomQuestion = Math.floor(Math.random() * allQuestions.length);
+  var questionStruct = allQuestions[randomQuestion];
+  allQuestions.splice(randomQuestion, 1);
 
   var question = questionStruct[0];
   var options = [
@@ -151,14 +165,33 @@ function pickQuestion(qOps) {
     questionStruct[3],
     questionStruct[4],
   ];
+  var answer = questionStruct[5];
 
-  return [question, options];
+  return [question, options, answer];
+}
+
+function genQuestion() {
+  var question;
+  var options;
+  var answer;
+  [question, options, answer] = pickQuestion(questionArray);
+  showQuestion(question, options, questionNum, answer);
+}
+
+function checkAnswer(event, correctAnswer) {
+  event.stopPropagation();
+  var selection = event.target.innerText;
+  selection = selection.split(".")[0];
+  console.log(correctAnswer);
+  console.log(selection);
+  if (selection == correctAnswer) {
+    console.log("correct!");
+  } else {
+    console.log("incorrect!");
+  }
 }
 
 highscoreButton.addEventListener("click", viewHighscores);
 startButton.addEventListener("click", function () {
-  var question;
-  var options;
-  [question, options] = pickQuestion(questionArray);
-  showQuestion(question, options, 1);
+  genQuestion();
 });
