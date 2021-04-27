@@ -49,7 +49,7 @@ var questionArray = [q1, q2, q3];
 
 //Changes elements on the page to display the highscores and their scores
 //Includes buttons to go back and clear the highscores
-function viewHighscores() {
+function viewHighscores(buttons, addHS, scoresExist) {
   var clearButton;
   var backButton;
   var docHS;
@@ -59,10 +59,12 @@ function viewHighscores() {
     textArea.setAttribute("style", "display: none");
     mainHeader.setAttribute("style", "text-align: left");
     startButton.setAttribute("style", "display: none");
-    docHS = addScores();
-    [clearButton, backButton] = addButtons();
+    docHS = addScores(scoresExist);
+    if (buttons) {
+      [clearButton, backButton] = addButtons();
+    }
     backButton.addEventListener("click", function () {
-      reset(buttonArea, clearButton, backButton);
+      reset(buttonArea, clearButton, backButton, addHS);
     });
     clearButton.addEventListener("click", function () {
       clearHighscores();
@@ -96,7 +98,11 @@ function addButtons() {
 }
 
 //Populates the Highscore page with current highscores saved
-function addScores() {
+function addScores(listExist) {
+  if (listExist) {
+    existingList = document.querySelector(".highscore-list");
+    quizArea.removeChild(existingList);
+  }
   var docHS = document.createElement("ol");
   docHS.setAttribute("id", "highscore-list");
   sortScores();
@@ -110,7 +116,7 @@ function addScores() {
 }
 
 function sortScores() {
-  //Code snippet from stack overflow
+  //Code snippet modified from stack overflow
   //https://stackoverflow.com/questions/1069666/sorting-object-property-by-values
   var sortedScores = Object.fromEntries(
     Object.entries(highscoreList).sort(([, a], [, b]) => b - a)
@@ -120,7 +126,7 @@ function sortScores() {
 }
 
 //Returns the page back to its original appearance
-function reset(area, clear, back) {
+function reset(area, clear, back, addHS) {
   highscoreButton.setAttribute("id", "view-highscore");
   mainHeader.textContent = "Coding Quiz Challenge!";
   mainHeader.setAttribute("style", "text-align: center");
@@ -132,6 +138,10 @@ function reset(area, clear, back) {
   area.removeChild(clear);
   area.removeChild(back);
   quizArea.removeChild(document.querySelector("#highscore-list"));
+
+  if (addHS) {
+    highscoreArea.setAttribute("style", "display: none");
+  }
 }
 
 //Resets the highscore array and updates page
@@ -219,7 +229,8 @@ function checkAnswer(event, correctAnswer, currentButtons) {
 
 function addHighscores() {
   buttonArea.setAttribute("style", "flex-direction: row");
-  viewHighscores();
+  highscoreButton.setAttribute("id", "view-highscore");
+  viewHighscores(true, false, false);
   highscoreArea.setAttribute("style", "display: flex");
   submitButton = highscoreArea.querySelector("#submit-highscore");
   submitButton.addEventListener("click", function () {
@@ -227,7 +238,7 @@ function addHighscores() {
     if (initials.value !== "") {
       highscoreList[initials] = correctAnswers;
       highscoreButton.setAttribute("id", "view-highscore");
-      viewHighscores();
+      viewHighscores(false, true, true);
     }
   });
 }
