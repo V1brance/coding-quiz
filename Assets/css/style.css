@@ -78,7 +78,8 @@ header {
   margin-bottom: 5vh;
 }
 
-.button-area button {
+.button-area button,
+.highscore-area button {
   width: 10%;
   height: 40px;
   background-color: var(--primary-color);
@@ -98,7 +99,12 @@ header {
 #highscore-list {
   text-align: left;
   font-family: var(--custom-para-font);
-  font-size: 20px;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+#highscore-list li {
+  margin-bottom: 0.5vh;
 }
 
 .question-option {
@@ -122,4 +128,19 @@ header {
 #number-correct {
   width: 35%;
   margin-left: 25%;
+}
+
+.highscore-area {
+  display: none;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 3vh;
+}
+
+.highscore-area input {
+  padding: 10px;
+  width: 8%;
+  font-family: var(--custom-para-font);
+  margin-right: 2vw;
 }

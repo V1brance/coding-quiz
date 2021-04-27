@@ -5,13 +5,14 @@ var startButton = document.querySelector("#start-button");
 var buttonArea = document.querySelector(".button-area");
 var quizArea = document.querySelector(".quiz-area");
 var answerArea = document.querySelector(".answer-area");
+var highscoreArea = document.querySelector(".highscore-area");
 
 var questionButtons;
 //key value pair list for the highscores
 //Remidner, highscoreList[newName] = score will add new item to object
 var highscoreList = {
-  SB: 21,
-  ML: 19,
+  SB: 15,
+  ML: 22,
   NC: 17,
 };
 
@@ -98,13 +99,24 @@ function addButtons() {
 function addScores() {
   var docHS = document.createElement("ol");
   docHS.setAttribute("id", "highscore-list");
+  sortScores();
   for (entry in highscoreList) {
     var newElement = document.createElement("li");
     newElement.innerHTML = entry + ": " + highscoreList[entry];
     docHS.appendChild(newElement);
   }
-  quizArea.insertBefore(docHS, buttonArea);
+  quizArea.insertBefore(docHS, highscoreArea);
   return docHS;
+}
+
+function sortScores() {
+  //Code snippet from stack overflow
+  //https://stackoverflow.com/questions/1069666/sorting-object-property-by-values
+  var sortedScores = Object.fromEntries(
+    Object.entries(highscoreList).sort(([, a], [, b]) => b - a)
+  );
+
+  highscoreList = sortedScores;
 }
 
 //Returns the page back to its original appearance
@@ -206,9 +218,18 @@ function checkAnswer(event, correctAnswer, currentButtons) {
 }
 
 function addHighscores() {
-  highscoreButton.setAttribute("id", "view-highscore");
   buttonArea.setAttribute("style", "flex-direction: row");
   viewHighscores();
+  highscoreArea.setAttribute("style", "display: flex");
+  submitButton = highscoreArea.querySelector("#submit-highscore");
+  submitButton.addEventListener("click", function () {
+    var initials = highscoreArea.querySelector("input").value;
+    if (initials.value !== "") {
+      highscoreList[initials] = correctAnswers;
+      highscoreButton.setAttribute("id", "view-highscore");
+      viewHighscores();
+    }
+  });
 }
 
 highscoreButton.addEventListener("click", viewHighscores);
