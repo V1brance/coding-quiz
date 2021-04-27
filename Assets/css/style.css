@@ -99,3 +99,7 @@ header {
   font-family: var(--custom-para-font);
   font-size: 20px;
 }
+
+.question-option {
+  margin: 1vh 0;
+}

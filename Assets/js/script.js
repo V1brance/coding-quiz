@@ -12,6 +12,30 @@ var highscoreList = {
   NC: 17,
 };
 
+q1 = [
+  "What does parentElement.appendChild(childElement) do?",
+  "removes child element from its parent",
+  "adds child element to the parent",
+  "removes the text content from the child element",
+  "nothing - this is not a function",
+];
+q2 = [
+  "What does HTML stand for?",
+  "Holistic Technical Malleable Language",
+  "Hyper-Text Markup Language",
+  "Hindering Telegraphed Marked List",
+  "Heated Timed Modification Language",
+];
+q3 = [
+  "What is the difference between margin and padding by default?",
+  "Padding is inside the element while margin is outside",
+  "Margin is inside the element while padding is outside",
+  "Margin and padding are both outside the element",
+  "Margin and padding are both inside the element",
+];
+
+questionArray = [q1, q2, q3];
+
 //Changes elements on the page to display the highscores and their scores
 //Includes buttons to go back and clear the highscores
 function viewHighscores(event) {
@@ -97,6 +121,7 @@ function clearHighscores() {
 }
 
 function showQuestion(text, answers, questionNum) {
+  buttonArea.setAttribute("style", "Flex-direction: column");
   mainHeader.textContent = "Question " + questionNum;
   textArea.textContent = text;
   var answerChoice = ["A.", "B.", "C.", "D."];
@@ -104,12 +129,10 @@ function showQuestion(text, answers, questionNum) {
   for (i = 0; i < answerChoice.length; i++) {
     var newOption = document.createElement("button");
     newOption.textContent = answerChoice[i] + " " + answers[i];
+    newOption.setAttribute("class", "question-option");
     buttonArea.appendChild(newOption);
   }
 }
-
-var question = "This is a sample question";
-var answers = ["OptionA", "OptionB", "OptionC", "OptionD"];
 
 highscoreButton.addEventListener("click", viewHighscores);
 startButton.addEventListener("click", function () {
