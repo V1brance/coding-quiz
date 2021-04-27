@@ -15,6 +15,8 @@ var highscoreList = {
 };
 
 var questionNum = 1;
+var correctAnswers = 0;
+var inccorectAnswers = 0;
 
 var q1 = [
   "What does parentElement.appendChild(childElement) do?",
@@ -134,7 +136,6 @@ function showQuestion(text, answers, questionNum, answer) {
   mainHeader.textContent = "Question " + questionNum;
   textArea.textContent = text;
   var answerChoice = ["A.", "B.", "C.", "D."];
-  buttonArea.removeChild(startButton);
   for (i = 0; i < answerChoice.length; i++) {
     var newOption = document.createElement("button");
     newOption.textContent = answerChoice[i] + " " + answers[i];
@@ -147,7 +148,7 @@ function showQuestion(text, answers, questionNum, answer) {
   for (i = 0; i < allButtons.length; i++) {
     allButtons[i].setAttribute("style", "width: 70%");
     allButtons[i].addEventListener("click", function (event) {
-      checkAnswer(event, answer);
+      checkAnswer(event, answer, allButtons);
     });
   }
 }
@@ -178,7 +179,7 @@ function genQuestion() {
   showQuestion(question, options, questionNum, answer);
 }
 
-function checkAnswer(event, correctAnswer) {
+function checkAnswer(event, correctAnswer, currentButtons) {
   event.stopPropagation();
   var selection = event.target.innerText;
   selection = selection.split(".")[0];
@@ -186,12 +187,21 @@ function checkAnswer(event, correctAnswer) {
   console.log(selection);
   if (selection == correctAnswer) {
     console.log("correct!");
+    correctAnswer++;
   } else {
     console.log("incorrect!");
+    inccorectAnswers++;
+  }
+  for (i = 0; i < currentButtons.length; i++) {
+    buttonArea.removeChild(currentButtons[i]);
+  }
+  if (questionArray.length !== 0) {
+    genQuestion();
   }
 }
 
 highscoreButton.addEventListener("click", viewHighscores);
 startButton.addEventListener("click", function () {
+  buttonArea.removeChild(startButton);
   genQuestion();
 });

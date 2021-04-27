@@ -103,3 +103,20 @@ header {
 .question-option {
   margin: 1vh 0;
 }
+
+.answer-area {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  color: darkslategrey;
+}
+
+#answer-feedback {
+  width: 25%;
+  margin-left: 5%;
+}
+
+#number-correct {
+  width: 35%;
+  margin-left: 25%;
+}
