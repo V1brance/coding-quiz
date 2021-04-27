@@ -75,6 +75,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 5vh;
 }
 
 .button-area button {
@@ -101,14 +102,16 @@ header {
 }
 
 .question-option {
-  margin: 1vh 0;
+  margin: 1.5vh 0;
 }
 
 .answer-area {
-  display: flex;
+  display: none;
   flex-direction: row;
   width: 100%;
+  border-top: 2px solid darkslategrey;
   color: darkslategrey;
+  font-weight: bold;
 }
 
 #answer-feedback {

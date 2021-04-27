@@ -4,6 +4,7 @@ var textArea = document.querySelector("#text-fill");
 var startButton = document.querySelector("#start-button");
 var buttonArea = document.querySelector(".button-area");
 var quizArea = document.querySelector(".quiz-area");
+var answerArea = document.querySelector(".answer-area");
 
 var questionButtons;
 //key value pair list for the highscores
@@ -14,7 +15,7 @@ var highscoreList = {
   NC: 17,
 };
 
-var questionNum = 1;
+var questionNum = 0;
 var correctAnswers = 0;
 var inccorectAnswers = 0;
 
@@ -47,17 +48,16 @@ var questionArray = [q1, q2, q3];
 
 //Changes elements on the page to display the highscores and their scores
 //Includes buttons to go back and clear the highscores
-function viewHighscores(event) {
+function viewHighscores() {
   var clearButton;
   var backButton;
   var docHS;
 
-  event.preventDefault();
-  mainHeader.textContent = "Highscores:";
-  textArea.setAttribute("style", "display: none");
-  mainHeader.setAttribute("style", "text-align: left");
-  startButton.setAttribute("style", "display: none");
   if (highscoreButton.id == "view-highscore") {
+    mainHeader.textContent = "Highscores:";
+    textArea.setAttribute("style", "display: none");
+    mainHeader.setAttribute("style", "text-align: left");
+    startButton.setAttribute("style", "display: none");
     docHS = addScores();
     [clearButton, backButton] = addButtons();
     backButton.addEventListener("click", function () {
@@ -129,10 +129,11 @@ function clearHighscores() {
   addScores();
 }
 
-function showQuestion(text, answers, questionNum, answer) {
+function showQuestion(text, answers, answer) {
   highscoreButton.setAttribute("id", "disabled");
   buttonArea.setAttribute("style", "Flex-direction: column");
 
+  questionNum++;
   mainHeader.textContent = "Question " + questionNum;
   textArea.textContent = text;
   var answerChoice = ["A.", "B.", "C.", "D."];
@@ -176,7 +177,7 @@ function genQuestion() {
   var options;
   var answer;
   [question, options, answer] = pickQuestion(questionArray);
-  showQuestion(question, options, questionNum, answer);
+  showQuestion(question, options, answer);
 }
 
 function checkAnswer(event, correctAnswer, currentButtons) {
@@ -187,7 +188,9 @@ function checkAnswer(event, correctAnswer, currentButtons) {
   console.log(selection);
   if (selection == correctAnswer) {
     console.log("correct!");
-    correctAnswer++;
+    correctAnswers++;
+    document.querySelector("#number-correct").textContent =
+      "Correct: " + correctAnswers;
   } else {
     console.log("incorrect!");
     inccorectAnswers++;
@@ -197,11 +200,20 @@ function checkAnswer(event, correctAnswer, currentButtons) {
   }
   if (questionArray.length !== 0) {
     genQuestion();
+  } else {
+    addHighscores();
   }
+}
+
+function addHighscores() {
+  highscoreButton.setAttribute("id", "view-highscore");
+  buttonArea.setAttribute("style", "flex-direction: row");
+  viewHighscores();
 }
 
 highscoreButton.addEventListener("click", viewHighscores);
 startButton.addEventListener("click", function () {
+  answerArea.setAttribute("style", "display: flex");
   buttonArea.removeChild(startButton);
   genQuestion();
 });
