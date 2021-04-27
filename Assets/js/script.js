@@ -113,7 +113,6 @@ function addScores(listExist) {
   return docHS;
 }
 
-<<<<<<< HEAD
 function sortScores() {
   //Code snippet modified from stack overflow
   //https://stackoverflow.com/questions/1069666/sorting-object-property-by-values
@@ -124,8 +123,6 @@ function sortScores() {
   highscoreList = sortedScores;
 }
 
-=======
->>>>>>> parent of 19d96f7 (Now store highscore, object is sorted so new highscores are ordered)
 //Returns the page back to its original appearance
 function reset(area, clear, back, addHS) {
   highscoreButton.setAttribute("id", "view-highscore");
@@ -231,22 +228,7 @@ function checkAnswer(event, correctAnswer, currentButtons) {
 function addHighscores() {
   highscoreButton.setAttribute("id", "view-highscore");
   buttonArea.setAttribute("style", "flex-direction: row");
-<<<<<<< HEAD
-  highscoreButton.setAttribute("id", "view-highscore");
-  viewHighscores(true, false, false);
-  highscoreArea.setAttribute("style", "display: flex");
-  submitButton = highscoreArea.querySelector("#submit-highscore");
-  submitButton.addEventListener("click", function () {
-    var initials = highscoreArea.querySelector("input").value;
-    if (initials.value !== "") {
-      highscoreList[initials] = correctAnswers;
-      highscoreButton.setAttribute("id", "view-highscore");
-      viewHighscores(false, true, true);
-    }
-  });
-=======
   viewHighscores();
->>>>>>> parent of 19d96f7 (Now store highscore, object is sorted so new highscores are ordered)
 }
 
 highscoreButton.addEventListener("click", viewHighscores);
