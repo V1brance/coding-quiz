@@ -96,4 +96,22 @@ function clearHighscores() {
   addScores();
 }
 
+function showQuestion(text, answers, questionNum) {
+  mainHeader.textContent = "Question " + questionNum;
+  textArea.textContent = text;
+  var answerChoice = ["A.", "B.", "C.", "D."];
+  buttonArea.removeChild(startButton);
+  for (i = 0; i < answerChoice.length; i++) {
+    var newOption = document.createElement("button");
+    newOption.textContent = answerChoice[i] + " " + answers[i];
+    buttonArea.appendChild(newOption);
+  }
+}
+
+var question = "This is a sample question";
+var answers = ["OptionA", "OptionB", "OptionC", "OptionD"];
+
 highscoreButton.addEventListener("click", viewHighscores);
+startButton.addEventListener("click", function () {
+  showQuestion(question, answers, 1);
+});
