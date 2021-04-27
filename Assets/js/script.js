@@ -5,14 +5,13 @@ var startButton = document.querySelector("#start-button");
 var buttonArea = document.querySelector(".button-area");
 var quizArea = document.querySelector(".quiz-area");
 var answerArea = document.querySelector(".answer-area");
-var highscoreArea = document.querySelector(".highscore-area");
 
 var questionButtons;
 //key value pair list for the highscores
 //Remidner, highscoreList[newName] = score will add new item to object
 var highscoreList = {
-  SB: 15,
-  ML: 22,
+  SB: 21,
+  ML: 19,
   NC: 17,
 };
 
@@ -105,16 +104,16 @@ function addScores(listExist) {
   }
   var docHS = document.createElement("ol");
   docHS.setAttribute("id", "highscore-list");
-  sortScores();
   for (entry in highscoreList) {
     var newElement = document.createElement("li");
     newElement.innerHTML = entry + ": " + highscoreList[entry];
     docHS.appendChild(newElement);
   }
-  quizArea.insertBefore(docHS, highscoreArea);
+  quizArea.insertBefore(docHS, buttonArea);
   return docHS;
 }
 
+<<<<<<< HEAD
 function sortScores() {
   //Code snippet modified from stack overflow
   //https://stackoverflow.com/questions/1069666/sorting-object-property-by-values
@@ -125,6 +124,8 @@ function sortScores() {
   highscoreList = sortedScores;
 }
 
+=======
+>>>>>>> parent of 19d96f7 (Now store highscore, object is sorted so new highscores are ordered)
 //Returns the page back to its original appearance
 function reset(area, clear, back, addHS) {
   highscoreButton.setAttribute("id", "view-highscore");
@@ -228,7 +229,9 @@ function checkAnswer(event, correctAnswer, currentButtons) {
 }
 
 function addHighscores() {
+  highscoreButton.setAttribute("id", "view-highscore");
   buttonArea.setAttribute("style", "flex-direction: row");
+<<<<<<< HEAD
   highscoreButton.setAttribute("id", "view-highscore");
   viewHighscores(true, false, false);
   highscoreArea.setAttribute("style", "display: flex");
@@ -241,6 +244,9 @@ function addHighscores() {
       viewHighscores(false, true, true);
     }
   });
+=======
+  viewHighscores();
+>>>>>>> parent of 19d96f7 (Now store highscore, object is sorted so new highscores are ordered)
 }
 
 highscoreButton.addEventListener("click", viewHighscores);
