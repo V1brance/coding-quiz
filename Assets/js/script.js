@@ -12,21 +12,21 @@ var highscoreList = {
   NC: 17,
 };
 
-q1 = [
+var q1 = [
   "What does parentElement.appendChild(childElement) do?",
   "removes child element from its parent",
   "adds child element to the parent",
   "removes the text content from the child element",
   "nothing - this is not a function",
 ];
-q2 = [
+var q2 = [
   "What does HTML stand for?",
   "Holistic Technical Malleable Language",
   "Hyper-Text Markup Language",
   "Hindering Telegraphed Marked List",
   "Heated Timed Modification Language",
 ];
-q3 = [
+var q3 = [
   "What is the difference between margin and padding by default?",
   "Padding is inside the element while margin is outside",
   "Margin is inside the element while padding is outside",
@@ -34,7 +34,7 @@ q3 = [
   "Margin and padding are both inside the element",
 ];
 
-questionArray = [q1, q2, q3];
+var questionArray = [q1, q2, q3];
 
 //Changes elements on the page to display the highscores and their scores
 //Includes buttons to go back and clear the highscores
@@ -122,6 +122,7 @@ function clearHighscores() {
 
 function showQuestion(text, answers, questionNum) {
   buttonArea.setAttribute("style", "Flex-direction: column");
+
   mainHeader.textContent = "Question " + questionNum;
   textArea.textContent = text;
   var answerChoice = ["A.", "B.", "C.", "D."];
@@ -132,9 +133,32 @@ function showQuestion(text, answers, questionNum) {
     newOption.setAttribute("class", "question-option");
     buttonArea.appendChild(newOption);
   }
+
+  var allButtons = buttonArea.querySelectorAll(".question-option");
+  console.log(allButtons);
+  for (i = 0; i < allButtons.length; i++) {
+    allButtons[i].setAttribute("style", "width: 70%");
+  }
+}
+
+function pickQuestion(qOps) {
+  var questionStruct = qOps[Math.floor(Math.random() * qOps.length)];
+
+  var question = questionStruct[0];
+  var options = [
+    questionStruct[1],
+    questionStruct[2],
+    questionStruct[3],
+    questionStruct[4],
+  ];
+
+  return [question, options];
 }
 
 highscoreButton.addEventListener("click", viewHighscores);
 startButton.addEventListener("click", function () {
-  showQuestion(question, answers, 1);
+  var question;
+  var options;
+  [question, options] = pickQuestion(questionArray);
+  showQuestion(question, options, 1);
 });
