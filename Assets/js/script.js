@@ -5,19 +5,17 @@ var startButton = document.querySelector("#start-button");
 var buttonArea = document.querySelector(".button-area");
 var quizArea = document.querySelector(".quiz-area");
 var answerArea = document.querySelector(".answer-area");
+var highscoreArea = document.querySelector(".highscore-area");
+var multipleRun = false;
 
 var questionButtons;
 //key value pair list for the highscores
 //Remidner, highscoreList[newName] = score will add new item to object
-var highscoreList = {
-  SB: 21,
-  ML: 19,
-  NC: 17,
-};
+var highscoreList = {};
 
 var questionNum = 0;
 var correctAnswers = 0;
-var inccorectAnswers = 0;
+var timer = 5;
 
 var q1 = [
   "What does parentElement.appendChild(childElement) do?",
@@ -45,6 +43,7 @@ var q3 = [
 ];
 
 var questionArray = [q1, q2, q3];
+var discardArray = [];
 
 //Changes elements on the page to display the highscores and their scores
 //Includes buttons to go back and clear the highscores
@@ -54,14 +53,13 @@ function viewHighscores(buttons, addHS, scoresExist) {
   var docHS;
 
   if (highscoreButton.id == "view-highscore") {
+    highscoreButton.setAttribute("id", "disabled");
     mainHeader.textContent = "Highscores:";
     textArea.setAttribute("style", "display: none");
     mainHeader.setAttribute("style", "text-align: left");
     startButton.setAttribute("style", "display: none");
     docHS = addScores(scoresExist);
-    if (buttons) {
-      [clearButton, backButton] = addButtons();
-    }
+    [clearButton, backButton] = addButtons();
     backButton.addEventListener("click", function () {
       reset(buttonArea, clearButton, backButton, addHS);
     });
@@ -74,22 +72,18 @@ function viewHighscores(buttons, addHS, scoresExist) {
 
 //Function which adds the new buttons to the screen
 function addButtons() {
+  buttonArea.setAttribute("style", "flex-direction: row");
   var clearButton = document.createElement("BUTTON");
   clearButton.innerHTML = "Clear Highscores";
   clearButton.setAttribute(
     "style",
-    "font-size: 17px; margin-left: 1vw; margin-right: 1vw",
-    "id",
-    "clear-button"
+    "font-size: 17px; margin-left: 1vw; margin-right: 1vw"
   );
+  clearButton.setAttribute("id", "clear-button");
   var backButton = document.createElement("BUTTON");
   backButton.innerHTML = "Go Back";
-  backButton.setAttribute(
-    "style",
-    "margin-left: 1vw; margin-right: 1vw",
-    "id",
-    "back-button"
-  );
+  backButton.setAttribute("style", "margin-left: 1vw; margin-right: 1vw");
+  backButton.setAttribute("id", "back-button");
 
   buttonArea.appendChild(clearButton);
   buttonArea.appendChild(backButton);
@@ -99,7 +93,7 @@ function addButtons() {
 //Populates the Highscore page with current highscores saved
 function addScores(listExist) {
   if (listExist) {
-    existingList = document.querySelector(".highscore-list");
+    existingList = document.querySelector("#highscore-list");
     quizArea.removeChild(existingList);
   }
   var docHS = document.createElement("ol");
@@ -110,7 +104,6 @@ function addScores(listExist) {
     docHS.appendChild(newElement);
   }
   quizArea.insertBefore(docHS, buttonArea);
-  return docHS;
 }
 
 function sortScores() {
@@ -135,7 +128,8 @@ function reset(area, clear, back, addHS) {
   startButton.setAttribute("style", "display: inline");
   area.removeChild(clear);
   area.removeChild(back);
-  quizArea.removeChild(document.querySelector("#highscore-list"));
+  var list = quizArea.querySelector("#highscore-list");
+  list.setAttribute("style", "display: none");
 
   if (addHS) {
     highscoreArea.setAttribute("style", "display: none");
@@ -146,7 +140,7 @@ function reset(area, clear, back, addHS) {
 function clearHighscores() {
   highscoreList = { No: "", One: "", Has: "", Won: "", Yet: "" };
   quizArea.removeChild(document.querySelector("#highscore-list"));
-  addScores();
+  addScores(false);
 }
 
 function showQuestion(text, answers, answer) {
@@ -178,8 +172,8 @@ function pickQuestion(allQuestions) {
   //Selects a random question from the array index
   var randomQuestion = Math.floor(Math.random() * allQuestions.length);
   var questionStruct = allQuestions[randomQuestion];
+  discardArray.unshift(questionStruct);
   allQuestions.splice(randomQuestion, 1);
-
   var question = questionStruct[0];
   var options = [
     questionStruct[1],
@@ -188,7 +182,6 @@ function pickQuestion(allQuestions) {
     questionStruct[4],
   ];
   var answer = questionStruct[5];
-
   return [question, options, answer];
 }
 
@@ -204,16 +197,12 @@ function checkAnswer(event, correctAnswer, currentButtons) {
   event.stopPropagation();
   var selection = event.target.innerText;
   selection = selection.split(".")[0];
-  console.log(correctAnswer);
-  console.log(selection);
   if (selection == correctAnswer) {
-    console.log("correct!");
     correctAnswers++;
     document.querySelector("#number-correct").textContent =
       "Correct: " + correctAnswers;
   } else {
-    console.log("incorrect!");
-    inccorectAnswers++;
+    timer = timer - 5;
   }
   for (i = 0; i < currentButtons.length; i++) {
     buttonArea.removeChild(currentButtons[i]);
@@ -226,14 +215,49 @@ function checkAnswer(event, correctAnswer, currentButtons) {
 }
 
 function addHighscores() {
-  highscoreButton.setAttribute("id", "view-highscore");
-  buttonArea.setAttribute("style", "flex-direction: row");
-  viewHighscores();
+  mainHeader.textContent = "Save your Scores: Enter Initials Below";
+  textArea.setAttribute("style", "display: none");
+  highscoreArea.setAttribute("style", "display:flex;");
+  var submitButton = highscoreArea.querySelector("#submit-initials");
+  submitButton.addEventListener("click", function () {
+    var initials = highscoreArea.querySelector("input").value;
+    console.log(multipleRun);
+    if (initials !== "") {
+      highscoreList[initials] = correctAnswers;
+      sortScores();
+      highscoreButton.setAttribute("id", "view-highscore");
+      viewHighscores(true, true, multipleRun);
+      highscoreArea.setAttribute("style", "display: none");
+      correctAnswers = 0;
+      questionNum = 0;
+      for (i = 0; i < discardArray.length; i++) {
+        questionArray.unshift(discardArray[i]);
+      }
+      multipleRun = true;
+    }
+  });
 }
 
 highscoreButton.addEventListener("click", viewHighscores);
 startButton.addEventListener("click", function () {
   answerArea.setAttribute("style", "display: flex");
-  buttonArea.removeChild(startButton);
+  startButton.setAttribute("style", "display: none");
+  document.querySelector("#number-correct").textContent =
+    "Correct: " + correctAnswers;
   genQuestion();
+  var quizTimer = setInterval(function () {
+    timer--;
+    var docTimer = document.querySelector("#timer");
+    docTimer.textContent = "Timer: " + timer;
+
+    if (timer == 0 || questionArray.length == 0) {
+      clearInterval(quizTimer);
+      optionSelect = buttonArea.querySelectorAll(".question-option");
+      console.log(optionSelect);
+      for (i = 0; i < optionSelect.length; i++) {
+        buttonArea.removeChild(optionSelect[i]);
+      }
+      addHighscores();
+    }
+  }, 1000);
 });

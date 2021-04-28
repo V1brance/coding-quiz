@@ -123,3 +123,7 @@ header {
   width: 35%;
   margin-left: 25%;
 }
+
+.highscore-area {
+  display: none;
+}
