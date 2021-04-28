@@ -15,7 +15,7 @@ var highscoreList = {};
 
 var questionNum = 0;
 var correctAnswers = 0;
-var timer = 5;
+var timer = 15;
 
 var q1 = [
   "What does parentElement.appendChild(childElement) do?",
@@ -41,8 +41,23 @@ var q3 = [
   "Margin and padding are both inside the element",
   "A",
 ];
+var q4 = [
+  "If you just declare a variable (eg. var number;) what would console.log(number) output?",
+  "Nothing",
+  "Error",
+  "String",
+  "Undefined",
+  "D",
+];
+var q5 = [
+  "What language is not natively supported by browsers?",
+  "HTML",
+  "CSS",
+  "Java",
+  "Javascript",
+];
 
-var questionArray = [q1, q2, q3];
+var questionArray = [q1, q2, q3, q4, q5];
 var discardArray = [];
 
 //Changes elements on the page to display the highscores and their scores
